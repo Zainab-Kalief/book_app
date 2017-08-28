@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+      header h3, header a{
+        display: inline-block;
+        padding-right: 20px;
+      }
+      span{
+        color: green;
+      }
+      div{
+        marging-bottom: 10px;
+        display: inline-block;
+        width: 60%;
+      }
+      section{
+        display: inline-block;
+        width: 65%;
+      }
+      aside{
+        display: inline-block;
+        width: 25%;
+        margin-left: 40px;
+        height: 400px;
+        vertical-align: top;
+        overflow: scroll;
+        background: grey;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h3>Welcome, {{user.name}}! ~~~ {{user.id}} </h3>
+
+      <a href="{% url 'books:add_book' id=user.id %}">Add Book and Review</a>
+      <a href="{% url 'users:index' %}">Logout</a>
+    </header>
+
+    <section>
+      <h2>Recent Book Reviews: </h2>
+      {% for review in reveiws %}
+        {% load humanize %}
+        <div>
+          <h3><a href="{% url 'books:show_book' id=user.id book_id=review.book.id %}">{{review.book.title}}</a></h3>
+          <p>{{review.book.average_rating}}</p>
+          <p><a href="{% url 'users:show_user' user_id=review.user.id %}">{{review.user.name}}</a> says {{review.content}}</p>
+          <h5>{{review.created_at|naturaltime}}</h5>
+        </div>
+      {% endfor %}
+    </section>
+
+    <aside>
+      {% for book in books %}
+        <p><a href="{% url 'books:show_book' id=user.id book_id=book.id %}">{{book.title}}</a></p>
+      {% endfor %}
+    </aside>
+
+  </body>
+</html>
